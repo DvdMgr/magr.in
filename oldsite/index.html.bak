@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Welcome!</title>
+		<link rel="icon" href="http://magr.in/favicon.png">
+		
+		<!-- Bootstrap stuff -->
+		<link rel="stylesheet" type="text/css" media="screen" href=".dist/css/bootstrap.min.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- Descriptions and keywords -->
+		<meta name="description" content="Davide Magrin's web directory">
+		<meta name="keywords" content="IT,news,interesting stuff">
+	</head>
+	<body class="well">
+		<h1>This is Davide Magrin's personal site</h1>
+
+		<!-- A table of contents -->
+
+		<p>Here I'll keep track of some projects:</p>
+		<ul>
+			<li>My webserver, a <a href="#raspi">Raspberry Pi</a></li>
+			<li>A <a href="#server">chronicle</a> of the problems I've encountered and the things I've learnt building this site</li>
+		</ul>
+
+		<p>Some thoughts:</p>
+		<ul>
+			<li><a href="#music">Music</a></li>
+			<li><a href="#movies">Movies</a></li>
+			<li><a href="#books">Books</a></li>
+		</ul>
+		
+		<p>Finally, here is some information about myself:</p>
+		<ul>
+			<li><a href="#about">About</a></li>
+			<li><a href="mailto:magrin.davide@gmail.com">Contact me via email</a></li>
+		</ul>
+
+		<!-- Here I start the various sections -->
+
+		<!-- The projects section -->
+		<h1 id="projects">Projects</h1>
+
+			<h2 id="raspi">My Raspberry Pi</h2>
+				<p>I use my Pi as a webserver (this very page is being served by my Raspberry). It also hosts:</p>
+				<ul>
+					<li>A ssh server (I can access it from my pc and smartphone, as the server is <a href="http://en.wikipedia.org/wiki/Headless_system">headless</a>)</li>
+					<li>A Transmission server</li>
+					<li>A WebDAV server. For more information about WebDAV, <a href="http://it.wikipedia.org/wiki/Web-based_Distributed_Authoring_and_Versioning">here's Wikipedia</a>.</li>
+				</ul>	
+				<p>In the TODO list there's a mail server, too</p>
+	
+			<h2 id="server">Building the server</h2>
+				<h3>The Pi</h3>
+				<p>At first I ran into some problems regading the Pi. It seems this little guy is quite picky about the SD cards and power supplies it will work with. At the moment I'm using a generic 16GB class 4 SanDisk SD card. 
+				Watch out, the SD "class" grows bigger as the serial data writing speed grows: higher classes are good for HD filming, not so much for the random access reads of the Raspberry. 
+				The power supply was probably the most problematic step. As I tried to boot Raspbian after wiring up the Raspberry with a USB keyboard and the HDMI output to my TV, the Pi kept rebooting after some seconds of power. There was output, and everything seemed alright until the reboot happened. The problem was the USB cable, which I discovered was too long. I guess there was a drop in voltage when the Raspberry tried to load up the keyboard (though I havent't tried wiring up another one). Using a power source with a smaller and shorter cable solved the problem.
+				The Raspbian install proceeded flawlessly: a post-installation guided configuration even set up ssh for me.
+				Right now my server is wired up using only an ethernet cable (I got the Pi in the B model) and the power supply. This is sufficient for my every need, as the server is headless and all of the maintenance is done via ssh.</p>
+				<h3>Dynamic DNS</h3>
+				As I'm using this server at home, it has a dynamic IP. I registered my domain via <a href="http://www.gandi.net">gandi.net</a>, and at the moment I'm using their APIs to update my server's current IP address in their zone file. 
+				The Python script can be found <a href="https://github.com/HammondSmoking/GIpUp">here</a>.
+				Currently there are better solutions around the web, for domains hosted at Gandi. I wanted to make my own. For the sake of learning. And masochism.
+
+		<h1 id="thoughts">Thoughts</h1>
+			<h2 id="music">Music</h2>
+			
+			<h2 id="movies">Movies</h2>
+
+			<h2 id="books">Books</h2>
+
+		<h1 id="about">About</h1>
+			<p>I'm an Italian student (Information engineering)
+		</body>
+</html>
