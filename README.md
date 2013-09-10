@@ -1,4 +1,0 @@
-magr.in
-=======
-
-My website
