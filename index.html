@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- Necessary to correctly visualize accents -->
 		<meta charset="utf-8"> 
 		<!-- Import CSS -->
-		<link rel="stylesheet" type="text/css" href="./dist/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="./dist/css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="./dist/css/custom.css">
+		<!-- Add user-scalable=no to the content to avoid user zooming -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<title>
 			Davide Magrin
@@ -12,15 +15,24 @@
 	</head>
 	
 	<body>
-		<div class="header">
+		<!-- A list of contents for the site -->
+		<div class="col-sm-4">
+			<nav>
+				<ul>
+					<li><a href="http://magr.in">Home</a></li>
+					<li><a href="http://magr.in/blog">Blog</a></li>
+					<li><a href="#links">Interesting articles</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</nav>
 		</div>
-		<div class="container">
-			<div class="navbar">
-			</div>
-			<div class="content">
-			</div>
+		<!-- The contents -->
+		<div class="col-sm-8">
+			<p>Some Content</p>
 		</div>
-		<div class="footer">
-		</div>
+		<!-- The footer -->
+		<div>
+			<p>Site by Davide Magrin</p>
+		</div>	
 	</body>
 </html>
