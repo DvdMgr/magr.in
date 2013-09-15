@@ -4,7 +4,7 @@
 		<!-- Necessary to correctly visualize accents -->
 		<meta charset="utf-8"> 
 		<!-- Import CSS -->
-		<link rel="stylesheet" type="text/css" href="./dist/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="./dist/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="./dist/css/custom.css">
 		<!-- Add user-scalable=no to the content to avoid user zooming -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,27 +12,55 @@
 		<title>
 			Davide Magrin
 		</title>
+		
 	</head>
 	
 	<body>
-		<!-- A list of contents for the site -->
-		<div class="col-sm-4">
-			<nav>
-				<ul>
+		<!-- Everything that's not the footer goes in the wrapper -->
+		<div id="wrap">
+			<!-- A list of contents for the site -->
+			<div>
+				<ul class="nav nav-tabs">
 					<li><a href="http://magr.in">Home</a></li>
 					<li><a href="http://magr.in/blog">Blog</a></li>
-					<li><a href="#links">Interesting articles</a></li>
-					<li><a href="#about">About</a></li>
+					<li><a href="#links" data-toggle="tab">Interesting articles</a></li>
+					<li><a href="#about" data-toggle="tab">About</a></li>
 				</ul>
-			</nav>
+			</div>
+			
+			<!-- The contents of the site -->
+			<div class="tab-content">
+				<div class="tab-pane" id="links">
+					<p>
+						This is a mashup of all the interesting links and articles I find around the web
+					</p>
+				</div>
+				<div class="tab-pane" id="about">
+					<p>
+						I am Davide Magrin, an Information Engineering student, at the University of Padua, in Italy.
+					</p>
+				</div>
+
+			</div>
 		</div>
-		<!-- The contents -->
-		<div class="col-sm-8">
-			<p>Some Content</p>
-		</div>
-		<!-- The footer -->
-		<div>
-			<p>Site by Davide Magrin</p>
+		<!-- The footer, has to stay at the bottom -->
+
+		<div id="footer">
+			<p class="text-muted credits text-center">Site by Davide Magrin</p>
 		</div>	
+		
+		<!-- Script: it has to load once all the elements are created -->
+		<script src="http://code.jquery.com/jquery-latest.pack.js"></script>
+		<script src="./dist/js/bootstrap.min.js"></script>
+		<!-- Tabs -->
+		<script>
+			$('#myTab a').click(function (e) 
+			{
+				e.preventDefault()
+				$(this).tab('show')
+			})
+			$('#myTab a[href="#stuff"]').tab('show')
+
+		</script>
 	</body>
 </html>
