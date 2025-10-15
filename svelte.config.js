@@ -21,9 +21,8 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			// For testing: deploy to dvdmgr.github.io/magr.in
-			// For production with custom domain: set to ''
-			base: process.env.NODE_ENV === 'production' ? '/magr.in' : ''
+			// Using custom domain magr.in - no base path needed
+			base: ''
 		}
 	},
 	extensions: ['.svelte', '.svx']
