@@ -13,21 +13,6 @@
 
 <nav>
 	<a href="{base}/" aria-current={$page.url.pathname === `${base}/` ? 'page' : undefined}>Home</a>
-	<a
-		href="{base}/projects"
-		aria-current={$page.url.pathname === `${base}/projects` ? 'page' : undefined}>Projects</a
-	>
-	<a
-		href="{base}/blog"
-		aria-current={$page.url.pathname.startsWith(`${base}/blog`) ? 'page' : undefined}>Blog</a
-	>
-	<a
-		href="{base}/photography"
-		aria-current={$page.url.pathname === `${base}/photography` ? 'page' : undefined}>Photography</a
-	>
-	<a href="{base}/now" aria-current={$page.url.pathname === `${base}/now` ? 'page' : undefined}
-		>Now</a
-	>
 </nav>
 
 <main>
