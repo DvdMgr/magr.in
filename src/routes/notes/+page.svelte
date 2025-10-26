@@ -5,12 +5,16 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<h1>Blog</h1>
+<svelte:head>
+	<title>Notes - Davide Magrin</title>
+</svelte:head>
+
+<h1>Notes</h1>
 
 <ul>
 	{#each data.posts as post (post.slug)}
 		<li>
-			<a href="{base}/blog/{post.slug}">
+			<a href="{base}/notes/{post.slug}">
 				<h2>{post.title}</h2>
 				<p>{post.description}</p>
 				<p>Published on: {new Date(post.date).toLocaleDateString()}</p>
