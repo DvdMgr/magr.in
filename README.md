@@ -1,38 +1,51 @@
-# sv
+# magr.in
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Davide Magrin's personal website, live at **https://magr.in**: a short profile, projects, and
+**Notes**, technical writing in Markdown.
 
-## Creating a project
+Built with SvelteKit 3 and Svelte 5, prerendered to static files and deployed to GitHub Pages on
+every push to `main` (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Develop
 
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Requires Node 22.17 or newer (CI uses Node 24).
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm install
+npm run dev      # development server
+npm run check    # type check
+npm run lint     # prettier and eslint
+npm run build    # static site in build/
+npm run preview  # serve build/ locally
 ```
 
-## Building
+## Write a note
 
-To create a production version of your app:
+Create `src/routes/notes/<slug>/+page.svx` (Markdown with Svelte components, via
+[mdsvex](https://mdsvex.pngwn.io)):
 
-```sh
-npm run build
+```markdown
+---
+title: A title
+date: 2026-10-12
+description: One sentence for the notes list and search engines.
+---
+
+The first paragraph...
 ```
 
-You can preview the production build with `npm run preview`.
+The notes list finds it automatically; `src/lib/NoteLayout.svelte` adds the title, the date and
+the link back. Without a `description`, the list shows the start of the first paragraph.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Layout
+
+```
+src/
+  app.css, app.html       global styles (colour tokens, light and dark) and page shell
+  lib/                    shared code, imported as #lib/... (package.json "imports")
+    NoteLayout.svelte     the layout of every note
+    notes.ts              note metadata, dates, excerpts
+  routes/                 one folder per page; notes/ holds the notes
+static/                   files copied as they are (CNAME, robots.txt)
+docs/                     deployment guide, the Captures concept
+```

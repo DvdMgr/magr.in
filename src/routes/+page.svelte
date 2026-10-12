@@ -1,5 +1,10 @@
+<script lang="ts">
+	import OpenSourceList from '#lib/OpenSourceList.svelte';
+</script>
+
 <svelte:head>
 	<title>Davide Magrin</title>
+	<meta name="description" content="Davide Magrin - Wireless Systems Engineer" />
 </svelte:head>
 
 <h1>Davide Magrin</h1>
@@ -20,23 +25,12 @@
 </p>
 
 <h2>Open Source</h2>
-<ul>
-	<li>
-		<a href="https://github.com/signetlabdei/sem" target="_blank" rel="noopener noreferrer"
-			><strong>SEM</strong></a
-		>
-		— A Python library to run ns-3 simulation campaigns and analyze results
-	</li>
-	<li>
-		<a href="https://github.com/signetlabdei/lorawan" target="_blank" rel="noopener noreferrer"
-			><strong>lorawan</strong></a
-		>
-		— An ns-3 module to simulate LoRaWAN networks
-	</li>
-</ul>
+<OpenSourceList />
 
 <h2>Contact</h2>
 <ul>
 	<li>Email: <a href="mailto:hello@magr.in">hello@magr.in</a></li>
-	<li>GitHub: <a href="https://github.com/DvdMgr" target="_blank" rel="noopener">DvdMgr</a></li>
+	<li>
+		GitHub: <a href="https://github.com/DvdMgr" target="_blank" rel="noopener noreferrer">DvdMgr</a>
+	</li>
 </ul>

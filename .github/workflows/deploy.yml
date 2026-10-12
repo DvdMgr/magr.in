@@ -7,25 +7,26 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
+# One deployment at a time: a newer push waits for the running one instead of cancelling it
+# halfway through publishing.
 concurrency:
   group: 'pages'
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
-          cache: 'npm'
+          # No dependency cache: installing takes seconds, and the build that gets published
+          # should not restore state other workflows could have written.
+          node-version: '24'
 
       - name: Install dependencies
         run: npm ci
@@ -34,17 +35,22 @@ jobs:
         run: npm run build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./build
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # Only this job can publish; the build job, which installs and runs the npm dependencies,
+    # can read the repository and nothing else.
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

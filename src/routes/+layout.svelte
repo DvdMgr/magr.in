@@ -1,15 +1,21 @@
 <script lang="ts">
 	import '../app.css';
-	import { page } from '$app/stores';
-	import { base } from '$app/paths';
+	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
+	import favicon from '#lib/assets/favicon.svg';
+	import type { LayoutProps } from './$types';
 
-	let { children } = $props();
+	let { children }: LayoutProps = $props();
 </script>
 
+<svelte:head>
+	<link rel="icon" type="image/svg+xml" href={favicon} />
+</svelte:head>
+
 <nav>
-	<a href="{base}/" aria-current={$page.url.pathname === `${base}/` ? 'page' : undefined}>Home</a>
+	<a href={resolve('/')} aria-current={page.route.id === '/' ? 'page' : undefined}>Home</a>
 </nav>
 
 <main>
-	{@render children?.()}
+	{@render children()}
 </main>

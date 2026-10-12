@@ -17,7 +17,7 @@ Each "capture" represents a trip or experience, combining:
 ```
 src/routes/captures/
   +page.svelte          # Landing page - grid of all captures
-  +page.ts              # Auto-discover captures via import.meta.glob
+  +page.server.ts       # Auto-discover captures via import.meta.glob (build time only)
   [slug]/
     +page.svx           # The capture content (markdown + media)
     cover.jpg           # Cover image for landing page
@@ -51,7 +51,7 @@ stats:
 Walking through Alfama at dawn...
 
 ![Narrow street at sunrise](./photos/1.jpg)
-*The light catches the tiled walls*
+_The light catches the tiled walls_
 
 <audio src="./sounds/morning.mp3" controls />
 
@@ -168,7 +168,7 @@ Styled consistently across all captures.
 Walking through empty streets...
 
 [Photo] [Photo]
-*Two smaller images side by side*
+_Two smaller images side by side_
 
 <audio src="..." />
 
@@ -203,7 +203,7 @@ The city waking up...
 
 ### Auto-discovery
 
-The landing page uses `import.meta.glob()` to automatically discover all captures (similar to blog implementation).
+The landing page uses `import.meta.glob()` in a `+page.server.ts` to discover all captures at build time, as the notes list does (`src/routes/notes/+page.server.ts`): the list reaches the browser as prerendered data, not as the captures' sources.
 
 ## Future Enhancements
 

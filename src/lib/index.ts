@@ -1,1 +1,1 @@
-// place files you want to import through the `$lib` alias in this folder.
+// Shared code, imported through the `#lib` alias (package.json `imports`).

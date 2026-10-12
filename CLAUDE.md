@@ -1,141 +1,90 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code (claude.ai/code) when working in this repository.
 
-## Project Overview
+## Project overview
 
-This is a personal website built with SvelteKit 2, using Svelte 5 with the static adapter. The site is deployed to GitHub Pages with a custom domain (magr.in).
+Davide Magrin's personal website, **https://magr.in**: SvelteKit 3 with Svelte 5 (runes),
+prerendered by `@sveltejs/adapter-static` and deployed to GitHub Pages.
 
-### Key Features
+**A push to `main` publishes the site** (`.github/workflows/deploy.yml`). Work on a branch; never
+push without Davide's explicit go-ahead.
 
-- **Home page** - Professional profile with contact info and open source projects
-- **Blog system** - Dynamic post discovery using mdsvex (not currently linked in nav)
-- **Captures** (planned) - Multi-sensory trip experiences with photos, sounds, and thoughts
-- **Now page** - Current activities and interests
+Pages:
 
-## Development Commands
+- `/` - home: profile, research, open source, contact (the only page in the nav for now)
+- `/notes` - Notes: technical writing in Markdown, discovered automatically
+- `/projects`, `/now` - projects and current activities
+- `/captures` - planned: trip experiences with photos, sounds and thoughts (`docs/CAPTURES.md`)
+
+## Commands
 
 ```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Type checking
-npm run check
-
-# Type checking in watch mode
-npm run check:watch
-
-# Format code
-npm run format
-
-# Lint code (runs both prettier check and eslint)
-npm run lint
+npm run dev          # development server
+npm run check        # svelte-check: must report 0 errors and 0 warnings
+npm run lint         # prettier --check, then eslint
+npm run format       # prettier --write
+npm run build        # static site in build/
+npm run preview      # serve build/ locally
 ```
+
+Node 22.17 or newer (SvelteKit 3's minimum; CI uses Node 24). `.npmrc` sets `engine-strict`.
 
 ## Architecture
 
-### Routing Structure
-
-SvelteKit file-based routing with the following main routes:
-
-- `/` - Home page
-- `/projects` - Projects showcase
-- `/blog` - Blog post listing with dynamic post discovery
-- `/photography` - Photography page
-- `/now` - Current activities page
-
-### Blog System
-
-The blog uses a unique dynamic loading system:
-
-**Key file: `src/routes/blog/+page.ts`**
-
-- Blog posts are `.svx` files (mdsvex) located in subdirectories under `src/routes/blog/`
-- Posts are automatically discovered using Vite's `import.meta.glob()` pattern
-- Each post should be in its own directory: `src/routes/blog/[slug]/+page.svx`
-- Post metadata is defined in YAML frontmatter with required fields: `title`, `date`, and optional `description`
-- Posts are sorted by date (newest first) and displayed on the blog listing page
-- If no description is provided, the first 200 characters of content are used as an excerpt
-
-**Creating a new blog post:**
-
-1. Create a new directory under `src/routes/blog/` with the desired slug
-2. Create a `+page.svx` file in that directory
-3. Add YAML frontmatter with at least `title` and `date`
-4. The post will automatically appear in the blog listing
-
 ### Configuration
 
-- **Adapter**: `@sveltejs/adapter-static` for static site generation
-  - Configured with explicit options (pages, assets, strict mode)
-  - Base path set to empty string for custom domain
-- **Preprocessors**: vitePreprocess and mdsvex
-  - mdsvex configured with `.svx` extension
-- **File extensions**: `.svelte` and `.svx` (for mdsvex files)
-- **TypeScript**: Strict mode enabled with bundler module resolution
-- **Prerendering**: Enabled globally via `src/routes/+layout.ts`
+SvelteKit 3 reads its configuration from the `sveltekit()` plugin in **`vite.config.ts`**
+(`svelte.config.js` is no longer supported): the adapter, the mdsvex preprocessor, the `.svx`
+extension and the runes setting. TypeScript extends `$app/tsconfig`.
+
+### Notes
+
+- A note is `src/routes/notes/<slug>/+page.svx` (mdsvex: Markdown plus Svelte components) with
+  YAML frontmatter: `title` and `date` required, `description` optional.
+- `src/routes/notes/+page.server.ts` builds the list at build time with `import.meta.glob`
+  (frontmatter only; the sources stay out of the browser bundle), newest first. Without a
+  `description`, `excerpt()` takes the start of the first prose paragraph.
+- Every note is wrapped in `src/lib/NoteLayout.svelte` (mdsvex `layout` option), which receives
+  the frontmatter as props and renders the `<title>`, the meta description, the heading, the date
+  and the link back. A note's body therefore starts after its title: no `# Title` line.
+- Dates: always through `formatDate()` / `isoDate()` in `src/lib/notes.ts`, which format in UTC
+  (a frontmatter date is a calendar day at midnight UTC; formatting it in the visitor's timezone
+  shows the previous day west of UTC).
+- `.svx` files compile in legacy mode (mdsvex emits `$$props` for layouts); everything else is
+  forced into runes mode (`compilerOptions.runes` in `vite.config.ts`).
+
+### Svelte 5 and SvelteKit 3 patterns
+
+- Props with `$props()`, typed with the generated `PageProps` / `LayoutProps`; `{@render children()}`.
+- Current page from `$app/state` (`page.route.id`, `page.url`), never `$app/stores` (removed).
+- Internal links with `resolve()` from `$app/paths`: route IDs start with `/`
+  (`resolve('/notes')`), plain paths do not. `base` and `assets` were removed. eslint's
+  `svelte/no-navigation-without-resolve` enforces this.
+- Shared code lives in `src/lib/` and is imported as `#lib/...` with its extension
+  (`#lib/notes.ts`), through `imports` in `package.json` (SvelteKit 3 dropped `$lib`).
+- Every route is prerendered (`export const prerender = true` in `src/routes/+layout.ts`).
 
 ### Styling
 
-- **Global styles** in `src/app.css` using CSS custom properties
-- **Design system**: Modern typography, consistent spacing, professional color palette
-- **CSS variables** for colors, spacing, typography (see `:root` in app.css)
-- **Responsive**: Font sizes and spacing scale up on larger screens
-- **Component styles**: Svelte's scoped `<style>` blocks where needed
-- **Navigation**: Simple nav bar with aria-current for accessibility
-- **Base path support**: Uses `{base}` from `$app/paths` for GitHub Pages compatibility
+- Global styles in `src/app.css`: colour, typography and spacing tokens on `:root`, redefined for
+  dark mode under `prefers-color-scheme: dark`. Components use the tokens, never literal colours.
+- Component styles in scoped `<style>` blocks.
+- The favicon (`src/lib/assets/favicon.svg`, imported by the root layout) follows the colour
+  scheme too.
 
-## Project Dependencies
+## Code quality
 
-- **Framework**: SvelteKit 2 with Svelte 5
-- **Content**: mdsvex for Markdown support
-- **Build**: Vite 7
-- **Linting**: ESLint 9 with TypeScript ESLint and Svelte plugin
-- **Formatting**: Prettier with Svelte plugin
-- **Deployment**: GitHub Actions to GitHub Pages
+Before handing back any change: `npm run check` (0 errors, 0 warnings), `npm run lint`, and
+`npm run build`; look at the changed pages with `npm run preview`, in light and dark mode.
 
-## Code Quality
+## Privacy
 
-- **Type checking**: `npm run check` - Must pass with 0 errors
-- **Linting**: `npm run lint` - Runs prettier check + eslint
-- **Formatting**: `npm run format` - Auto-formats all files
-- **Build verification**: Always test production build before deploying
-
-## Deployment
-
-The site deploys automatically to GitHub Pages via GitHub Actions on push to `main`.
-
-- **Custom domain**: magr.in (configured via `static/CNAME`)
-- **Base path**: Empty string (for custom domain)
-- **Workflow**: `.github/workflows/deploy.yml`
-- **See**: `docs/DEPLOYMENT.md` for detailed deployment instructions
+Photos and audio must have their metadata stripped before they are committed
+(`exiftool -all= file.jpg`); see `docs/CAPTURES.md`.
 
 ## Documentation
 
-- **CLAUDE.md** (this file) - Development guide in root directory
-- **docs/** - Additional documentation
-  - `DEPLOYMENT.md` - GitHub Pages setup
-  - `CAPTURES.md` - Captures feature concept and implementation guide
-  - `README.md` - Documentation index
-
-## Important Notes
-
-### Privacy & Security
-
-- **Metadata stripping**: All photos and audio files must have EXIF/metadata stripped before committing
-- Use `exiftool -all= file.jpg` to remove metadata
-- See `docs/CAPTURES.md` for detailed privacy guidelines
-
-### Svelte 5 Patterns
-
-This project uses Svelte 5 syntax:
-- `$props()` instead of `export let`
-- `{@render children?.()}` for slot rendering
-- `$page` and `$base` from stores/paths for navigation
-- Runes: `$state`, `$derived`, `$effect` where needed
+- `README.md` - what the site is, how to develop, how to write a note
+- `docs/DEPLOYMENT.md` - GitHub Pages, the custom domain, the workflow
+- `docs/CAPTURES.md` - the Captures concept
