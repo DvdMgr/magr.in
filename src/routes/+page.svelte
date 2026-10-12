@@ -33,4 +33,9 @@
 	<li>
 		GitHub: <a href="https://github.com/DvdMgr" target="_blank" rel="noopener noreferrer">DvdMgr</a>
 	</li>
+	<li>
+		LinkedIn: <a href="https://www.linkedin.com/in/dvdmgr" target="_blank" rel="noopener noreferrer"
+			>dvdmgr</a
+		>
+	</li>
 </ul>
